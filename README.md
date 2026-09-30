@@ -1,4 +1,4 @@
-# project-testAPI-QA
+# TestAPI-QA
 
 Состав проекта
 
