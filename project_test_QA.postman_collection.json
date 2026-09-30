@@ -1,0 +1,1256 @@
+{
+  "info": {
+    "_postman_id": "605a8818-810c-4b2e-9654-40d16c603978",
+    "name": "project test QA",
+    "description": "Позитивные и негативные проверки по API методам из документации [https://restful-booker.herokuapp.com/apidoc/index.html<br><br>](https://restful-booker.herokuapp.com/apidoc/index.html)Сами API методы с тест-кейсами разделены по папкам:\n\n1. CreateToken - Создание токена [https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken)\n    \n2. CreateBooking - Бронирование книги [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking)\n    \n3. GetBookingIds - Возвращает все брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBookings](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBookings)\n    \n4. GetBooking - Возврат конкретной брони по bookingid [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBooking)\n    \n5. UpdateBooking - Обновление текущего бронирования по bookingid [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking)\n    \n6. PartialUpdateBooking - Частичное обновление текущего бронирования по bookingid [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking)\n    \n7. DeleteBooking - Удаление брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-DeleteBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-DeleteBooking)\n    \n8. HealthCheck - Проверка доступности endpoint [https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping](https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping)\n    \n\n[](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27041576"
+  },
+  "item": [
+    {
+      "name": "1.CreateToken",
+      "item": [
+        {
+          "name": "AUTH-001 Валидные данные",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\npm.test(\"Токен получен\", () => { const j = pm.response.json(); pm.expect(j.token).to.be.a(\"string\").and.not.empty; pm.collectionVariables.set(\"token\", j.token); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\":\"admin\",\"password\":\"password123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTH-002 Неверный пароль",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Некорректные учётные данные не дают токен\", () => { pm.expect(pm.response.code).to.be.oneOf([200,401,403]); const j=pm.response.json(); pm.expect(j.token).to.be.undefined; pm.expect(JSON.stringify(j).toLowerCase()).to.include(\"bad\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\":\"admin\",\"password\":\"wrong\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTH-003 Пустое тело",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Некорректные учётные данные не дают токен\", () => { pm.expect(pm.response.code).to.be.oneOf([200,401,403]); const j=pm.response.json(); pm.expect(j.token).to.be.undefined; pm.expect(JSON.stringify(j).toLowerCase()).to.include(\"bad\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTH-004 Только username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Некорректные учётные данные не дают токен\", () => { pm.expect(pm.response.code).to.be.oneOf([200,401,403]); const j=pm.response.json(); pm.expect(j.token).to.be.undefined; pm.expect(JSON.stringify(j).toLowerCase()).to.include(\"bad\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\":\"admin\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Создание токена [https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken)"
+    },
+    {
+      "name": "2.CreateBooking",
+      "item": [
+        {
+          "name": "BOOK-POST-001 Создать корректную бронь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\npm.test(\"Создана бронь и есть bookingid\", () => { const j=pm.response.json(); pm.expect(j.bookingid).to.be.a(\"number\"); pm.expect(j.booking).to.have.property(\"firstname\", \"Gleb\"); pm.collectionVariables.set(\"bookingId\",j.bookingid); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"Gleb\",\n  \"lastname\": \"Tester\",\n  \"totalprice\": 999,\n  \"depositpaid\": true,\n  \"bookingdates\": {\n    \"checkin\": \"2026-09-29\",\n    \"checkout\": \"2026-09-30\"\n  },\n  \"additionalneeds\": \"Breakfast\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-POST-002 Нет firstname",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"lastname\": \"Tester\",\r\n    \"totalprice\": 999,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2026-09-29\",\r\n        \"checkout\": \"2026-09-30\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-POST-003 totalprice строкой",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\": \"Gleb\",\r\n    \"lastname\": \"Tester\",\r\n    \"totalprice\": \"abc\",\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2026-09-29\",\r\n        \"checkout\": \"2026-09-30\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-POST-004 checkout раньше checkin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\": \"Gleb\",\r\n    \"lastname\": \"Tester\",\r\n    \"totalprice\": 999,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2026-09-30\",\r\n        \"checkout\": \"2026-09-29\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-POST-005 Некорректный JSON",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\": \"broken\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Оформление бронирования книги [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking)"
+    },
+    {
+      "name": "3.GetBookingIds",
+      "item": [
+        {
+          "name": "BOOK-GET-001 Получить все брони",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\n\npm.test(\"Найдены бронирования с bookingid\", () => {\n  const j = pm.response.json();\n\n  pm.expect(j).to.be.an(\"array\");\n  pm.expect(j, \"Список бронирований не должен быть пустым\").to.not.be.empty;\n\n  j.slice(0, 10).forEach((x) => {\n    pm.expect(x).to.have.property(\"bookingid\");\n    pm.expect(x.bookingid).to.be.a(\"number\");\n  });\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-GET-002 Фильтр firstname",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\n\npm.test(\"Найдены бронирования с bookingid\", () => {\n  const j = pm.response.json();\n\n  pm.expect(j).to.be.an(\"array\");\n  pm.expect(j, \"Список бронирований не должен быть пустым\").to.not.be.empty;\n\n  j.slice(0, 10).forEach((x) => {\n    pm.expect(x).to.have.property(\"bookingid\");\n    pm.expect(x.bookingid).to.be.a(\"number\");\n  });\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking?firstname=Gleb",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "firstname",
+                  "value": "Gleb"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-GET-003 Фильтр lastname",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\n\npm.test(\"Найдены бронирования с bookingid\", () => {\n  const j = pm.response.json();\n\n  pm.expect(j).to.be.an(\"array\");\n  pm.expect(j, \"Список бронирований не должен быть пустым\").to.not.be.empty;\n\n  j.slice(0, 10).forEach((x) => {\n    pm.expect(x).to.have.property(\"bookingid\");\n    pm.expect(x.bookingid).to.be.a(\"number\");\n  });\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking?lastname=Tester",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "lastname",
+                  "value": "Tester"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-GET-004 Фильтр checkin/checkout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\n\npm.test(\"Найдены бронирования с bookingid\", () => {\n  const j = pm.response.json();\n\n  pm.expect(j).to.be.an(\"array\");\n  pm.expect(j, \"Список бронирований не должен быть пустым\").to.not.be.empty;\n\n  j.slice(0, 10).forEach((x) => {\n    pm.expect(x).to.have.property(\"bookingid\");\n    pm.expect(x.bookingid).to.be.a(\"number\");\n  });\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking?checkin=2026-09-29&checkout=2026-09-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "checkin",
+                  "value": "2026-09-29"
+                },
+                {
+                  "key": "checkout",
+                  "value": "2026-09-30"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-GET-005 Некорректная дата",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/booking?checkin=not-a-date",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "checkin",
+                  "value": "not-a-date"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-GET-006 Нет результатов",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\npm.test(\"Пустой массив\", () => pm.expect(pm.response.json()).to.be.an(\"array\").and.empty);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/booking?firstname=John_Doe",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "firstname",
+                  "value": "John_Doe"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Получить все брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBookings](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBookings)"
+    },
+    {
+      "name": "4.GetBooking",
+      "item": [
+        {
+          "name": "BOOK-ID-GET-001 Получить существующую бронь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\npm.test(\"Данные получены\", () => { const j=pm.response.json(); [\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"].forEach(k=>pm.expect(j).to.have.property(k)); pm.expect(j.bookingdates).to.have.all.keys(\"checkin\",\"checkout\"); });"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-GET-002 Несуществующий ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Несуществующий ID: 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-GET-003 Нечисловой ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/booking/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "abc"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Возврат конкретного бронирования [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBooking)"
+    },
+    {
+      "name": "5.UpdateBooking",
+      "item": [
+        {
+          "name": "BOOK-ID-PUT-001 Полная замена с token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\npm.test(\"Данные обновлены\", () => { const j=pm.response.json(); pm.expect(j.firstname).to.eql(\"Gleb\"); pm.expect(j.lastname).to.eql(\"Updated\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\": \"Gleb\",\r\n    \"lastname\": \"Updated\",\r\n    \"totalprice\": 666,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2026-09-29\",\r\n        \"checkout\": \"2026-09-30\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-PUT-002 Без токена",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Без авторизации операция отклоняется\", () => pm.expect(pm.response.code).to.be.oneOf([401,403]));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstname\": \"Gleb\",\n    \"lastname\": \"Updated\",\n    \"totalprice\": 6666,\n    \"depositpaid\": true,\n    \"bookingdates\": {\n        \"checkin\": \"2026-09-29\",\n        \"checkout\": \"2026-09-30\"\n    },\n    \"additionalneeds\": \"Breakfast\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-PUT-003 PUT с неполной моделью",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\": \"Gleb\",\r\n    \"lastname\": \"Updated\",\r\n    \"totalprice\": 6666,\r\n    \"depositpaid\": true,\r\n    \"additionalneeds\": \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Обновление брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-UpdateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-UpdateBooking)"
+    },
+    {
+      "name": "6.PartialUpdateBooking",
+      "item": [
+        {
+          "name": "BOOK-ID-PATCH-001 Частичное обновление с token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));\npm.test(\"Изменено только указанное поле\", () => pm.expect(pm.response.json().firstname).to.eql(\"Patched\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstname\":\"Patched\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-PATCH-002 Без токена",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Без авторизации операция отклоняется\", () => pm.expect(pm.response.code).to.be.oneOf([401,403]));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstname\":\"Rejected\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-PATCH-003 Невалидный тип",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Клиентская ошибка, не 5xx\", () => pm.expect(pm.response.code).to.be.within(400,499));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"totalprice\":\"abc\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Частичное обновление брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking)"
+    },
+    {
+      "name": "7.DeleteBooking",
+      "item": [
+        {
+          "name": "BOOK-ID-DELETE-001 DELETE Без токена",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Без авторизации операция отклоняется\", () => pm.expect(pm.response.code).to.be.oneOf([401,403]));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-DELETE-002 Удалить с токеном",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-DELETE-003 Проверить удаление",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Удалённая бронь недоступна\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK-ID-DELETE-004 Повторное удаление",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Не найден 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Удаление бронирования [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-DeleteBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-DeleteBooking)"
+    },
+    {
+      "name": "8.HealthCheck",
+      "item": [
+        {
+          "name": "PING-001 Проверка доступности",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Сервис доступен: 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ping",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ping"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Проверка доступности [https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping](https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping)"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://restful-booker.herokuapp.com"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    },
+    {
+      "key": "unknownId",
+      "value": "999999999"
+    }
+  ]
+}
