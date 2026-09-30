@@ -4,8 +4,7 @@
 
 - `project_test_cases_QA.xlsx` — 29 позитивных и негативных тест-кейсов для `/auth`, `/booking`, `/booking/:id` и `/ping` из документации https://restful-booker.herokuapp.com/apidoc/index.html
 - `project_test_QA.postman_collection` — коллекция Postman с проверками
-  
-~~bug_report.md~~ — ~~реестр подтверждённых дефектов и готовая структура баг-репорта~~  `пока что под вопросом`
+- `bug_reports.xlsx` - найденные Баги в процессе выполнения ранов коллекции 
 
 ## Запуск Postman-коллекции
 
