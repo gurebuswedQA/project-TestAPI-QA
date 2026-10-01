@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "605a8818-810c-4b2e-9654-40d16c603978",
-    "name": "project test QA",
+    "name": "project test QA prod",
     "description": "Позитивные и негативные проверки по API методам из документации [https://restful-booker.herokuapp.com/apidoc/index.html<br><br>](https://restful-booker.herokuapp.com/apidoc/index.html)Сами API методы с тест-кейсами разделены по папкам:\n\n1. CreateToken - Создание токена [https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken)\n    \n2. CreateBooking - Оформление бронирования [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking)\n    \n3. GetBookingIds - Возвращает все брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBookings](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBookings)\n    \n4. GetBooking - Возврат конкретной брони по bookingid [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-GetBooking)\n    \n5. UpdateBooking - Обновление текущего бронирования по bookingid [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking)\n    \n6. PartialUpdateBooking - Частичное обновление текущего бронирования по bookingid [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-PartialUpdateBooking)\n    \n7. DeleteBooking - Удаление брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-DeleteBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-DeleteBooking)\n    \n8. HealthCheck - Проверка доступности endpoint [https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping](https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping)\n    \n\n[](https://restful-booker.herokuapp.com/apidoc/index.html#api-Auth-CreateToken)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "27041576"
@@ -1233,6 +1233,32 @@
         }
       ],
       "description": "Проверка доступности [https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping](https://restful-booker.herokuapp.com/apidoc/index.html#api-Ping-Ping)"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "const usesToken = pm.request.headers.has(\"Cookie\");\r",
+          "\r",
+          "if (usesToken) {\r",
+          "  const token = pm.collectionVariables.get(\"token\");\r",
+          "\r",
+          "  if (!token) {\r",
+          "    throw new Error(\r",
+          "      \"Токен не найден. Сначала выполните AUTH-001 или запустите коллекцию сверху вниз.\"\r",
+          "    );\r",
+          "  }\r",
+          "\r",
+          "  pm.request.headers.upsert({\r",
+          "    key: \"Cookie\",\r",
+          "    value: `token=${token}`\r",
+          "  });\r",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
     }
   ],
   "variable": [
