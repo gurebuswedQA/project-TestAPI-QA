@@ -395,7 +395,7 @@
           "response": []
         }
       ],
-      "description": "Оформление бронирования книги [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking)"
+      "description": "Оформление брони [https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking](https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking)"
     },
     {
       "name": "3.GetBookingIds",
